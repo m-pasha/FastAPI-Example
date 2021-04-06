@@ -1,9 +1,23 @@
 from typing import Optional, List
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 # from models import Item
 
-main = FastAPI()
+
+def get_application():
+    main = FastAPI(title="Test", version="1.0.0")
+    main.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    return main
+
+
+main = get_application()
 
 
 def process_items(items: List[str]):
@@ -13,7 +27,7 @@ def process_items(items: List[str]):
 
 @main.get("/")
 async def root():
-    return {"message": "Hello World 123"}
+    return {"message": "Hello World!)"}
 
 
 @main.get("/items/{item_id}")
